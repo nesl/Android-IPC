@@ -162,7 +162,7 @@ public class FibonacciActivity extends Activity implements OnClickListener,
 					
 					
 					Log.d(TAG, "Getting byte buffer from response");
-					byte[] buffer = new byte[testString.length];
+					byte[] buffer = new byte[1000];
 					
 					buffer = response.getbuffer();
 						

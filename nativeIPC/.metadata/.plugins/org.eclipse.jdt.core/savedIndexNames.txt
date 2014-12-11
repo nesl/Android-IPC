@@ -1,0 +1,5 @@
+INDEX VERSION 1.126+/Users/davidurdaneta/Documents/parcelIPC_sensor_data/.metadata/.plugins/org.eclipse.jdt.core
+4249205075.index
+2672629545.index
+3240886563.index
+26969827.index

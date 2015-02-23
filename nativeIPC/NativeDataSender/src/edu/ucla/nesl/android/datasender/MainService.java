@@ -1,4 +1,4 @@
-package edu.ucla.nesl.android;
+package edu.ucla.nesl.android.datasender;
 
 import android.app.Service;
 import android.content.Intent;
@@ -30,6 +30,12 @@ public class MainService extends Service implements SensorEventListener {
 	@Override
 	public void onSensorChanged(SensorEvent event) {
 		Log.i(TAG, "x=" + event.values[0]);
+		Intent intent = new Intent();
+		intent.setAction("android.intent.action.DATA");
+		intent.putExtra("x", event.values[0]);
+		intent.putExtra("y", event.values[1]);
+		intent.putExtra("z", event.values[2]);
+		sendBroadcast(intent);
 	}
 
 	@Override

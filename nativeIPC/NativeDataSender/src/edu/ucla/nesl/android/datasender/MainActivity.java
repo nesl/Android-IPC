@@ -1,4 +1,4 @@
-package edu.ucla.nesl.android;
+package edu.ucla.nesl.android.datasender;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -7,17 +7,18 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.Toast;
-import edu.ucla.nesl.android.MainService.LocalBinder;
+import edu.ucla.nesl.android.datasender.MainService.LocalBinder;
 
 public class MainActivity extends Activity {
 	private MainService mService;
     private boolean mBound = false;
+    private static final String TAG = "MainActivity";
     
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -44,6 +45,7 @@ public class MainActivity extends Activity {
         button1.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
+				Log.i(TAG, "start clicked");
 				if (mBound) {
 					mService.start();
 				}
@@ -55,6 +57,7 @@ public class MainActivity extends Activity {
         button2.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Log.i(TAG, "stop clicked");
 				if (mBound) {
 					mService.stop();
 				}

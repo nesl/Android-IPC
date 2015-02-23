@@ -1,4 +1,4 @@
-package edu.ucla.nesl.android;
+package edu.ucla.nesl.android.datareceiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

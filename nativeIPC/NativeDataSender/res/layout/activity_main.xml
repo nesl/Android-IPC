@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.ucla.nesl.android.MainActivity" >
+    tools:context="edu.ucla.nesl.android.datasender.MainActivity" >
 
     <TextView
         android:id="@+id/textView1"

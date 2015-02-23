@@ -6,7 +6,7 @@ import android.os.Parcelable;
 public class FibonacciRequest implements Parcelable {
 
 	public static enum Type {
-		RECURSIVE_JAVA, ITERATIVE_JAVA, RECURSIVE_NATIVE, ITERATIVE_NATIVE
+		RECURSIVE_JAVA, ITERATIVE_JAVA, RECURSIVE_NATIVE, ITERATIVE_NATIVE, SENSOR_DATA
 	}
 
 	private final long n;

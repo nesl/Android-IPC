@@ -49,6 +49,9 @@ public class IFibonacciServiceImpl extends IFibonacciService.Stub {
 		case RECURSIVE_NATIVE:
 			result = this.fibNR(request.getN());
 			break;
+		case SENSOR_DATA:
+			result = 0;
+			break;
 		default:
 			return null;
 		}

@@ -7,12 +7,21 @@ public class FibonacciResponse implements Parcelable {
 
 	private long result;
 	private long timeInMillis;
+	
+	private float data[];
 
 	
 	public FibonacciResponse(long result, long timeInMillis) 
 	{ 
 		this.result = result;
 		this.timeInMillis = timeInMillis;
+	}
+	
+	public FibonacciResponse(long result, long timeInMillis, float _data[]) 
+	{ 
+		this.result = result;
+		this.timeInMillis = timeInMillis;
+		this.data = _data;
 	}
 	
 	public long getResult() {
@@ -44,10 +53,14 @@ public class FibonacciResponse implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 	    dest.writeLong(result);
 	    dest.writeLong(timeInMillis);
+	    dest.writeInt(data.length);
+	    dest.writeFloatArray(data);
 	}
 
 	public void readFromParcel(Parcel in){
 	    this.result = in.readLong();
 	    this.timeInMillis = in.readLong();
+	    this.data = new float[in.readInt()];
+	    in.readFloatArray(data);
 	}
 }

@@ -20,7 +20,7 @@ char *buffer;
  * Method:    getFD
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_datasender_nativelib_NativeLib_getFD
+JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_ashmem_datasender_nativelib_NativeLib_getFD
   (JNIEnv *env, jclass class) {
 	return fd;
 }
@@ -30,10 +30,10 @@ JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_datasender_nativelib_NativeLib
  * Method:    writeToFD
  * Signature: ([BI)I
  */
-JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_datasender_nativelib_NativeLib_writeToFD
+JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_ashmem_datasender_nativelib_NativeLib_writeToFD
   (JNIEnv *env, jclass class, jbyteArray data, jint length) {
 	char *p = (char *) (*env)->GetByteArrayElements( env, data, NULL);
-	__android_log_print(ANDROID_LOG_DEBUG, "FibLib.c", "Data received from service is --- %s", p);
+	__android_log_print(ANDROID_LOG_DEBUG, "Sender NativeLib.c", "Data received from service is --- %s", p);
 
 	memcpy (data, p, length);
 	(*env)->ReleaseByteArrayElements(env, data, (char *)p, 0);
@@ -48,10 +48,10 @@ JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_datasender_nativelib_NativeLib
  * Method:    closeFD
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_datasender_nativelib_NativeLib_closeFD
+JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_ashmem_datasender_nativelib_NativeLib_closeFD
   (JNIEnv *env, jclass class) {
 	if (munmap(buffer, BUF_SIZE) == -1) {
-		__android_log_print(ANDROID_LOG_DEBUG, "FibLib.c", "Unmapping the file failed");
+		__android_log_print(ANDROID_LOG_DEBUG, "Sender NativeLib.c", "Unmapping the file failed");
 		close(fd);
 		return -1;
 	}
@@ -64,20 +64,20 @@ JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_datasender_nativelib_NativeLib
  * Method:    createFD
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_datasender_nativelib_NativeLib_createFD
+JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_ashmem_datasender_nativelib_NativeLib_createFD
   (JNIEnv *env, jclass class) {
-	__android_log_print(ANDROID_LOG_DEBUG, "NativeLib", "In createFD");
+	__android_log_print(ANDROID_LOG_DEBUG, "Sender NativeLib", "In createFD");
 
 	fd = open("/dev/ashmem", O_RDWR);
 	ioctl(fd, ASHMEM_SET_NAME, "data_mem");
 	ioctl(fd, ASHMEM_SET_SIZE, BUF_SIZE);
 
 //	fd = ashmem_create_region("my_mem", BUF_SIZE);
-	__android_log_print(ANDROID_LOG_DEBUG, "NativeLib", "created ashmem file in NDK with fd as %d", fd);
+	__android_log_print(ANDROID_LOG_DEBUG, "Sender NativeLib", "created ashmem file in NDK with fd as %d", fd);
 	buffer = mmap(NULL, BUF_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 	if(buffer == MAP_FAILED)
 	{
-		__android_log_print(ANDROID_LOG_DEBUG, "FibLib.c", "buff is not valid");
+		__android_log_print(ANDROID_LOG_DEBUG, "Sender NativeLib.c", "buffer is not valid");
 		return -1;
 	}
 

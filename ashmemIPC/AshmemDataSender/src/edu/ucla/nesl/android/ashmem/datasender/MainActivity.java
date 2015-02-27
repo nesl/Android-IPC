@@ -1,7 +1,7 @@
 package edu.ucla.nesl.android.ashmem.datasender;
 
 import java.nio.ByteBuffer;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -32,8 +32,12 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View arg0) {
 				Log.i(TAG, "createFD clicked");
-				NativeLib.createFD();
-			}        	
+				int fd = NativeLib.createFD();
+				Intent intent = new Intent();
+				intent.setAction("android.intent.action.FD");
+				intent.putExtra("fd", fd);
+				sendBroadcast(intent);
+			}
         });
         
         
@@ -44,6 +48,11 @@ public class MainActivity extends ActionBarActivity {
 				Log.i(TAG, "writeFD clicked");
 				byte[] data = ByteBuffer.allocate(4).putFloat(count++).array();
 				NativeLib.writeToFD(data, 4);
+				
+				// notify the receiver
+				Intent intent = new Intent();
+				intent.setAction("android.intent.action.DATA");
+				sendBroadcast(intent);
 			}
         });
         

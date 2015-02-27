@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="13"
         android:targetSdkVersion="21" />
 
     <application
@@ -22,6 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <receiver android:name=".SensorDataReceiver" android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.FD"></action>  
+        		<action android:name="FD"></action> 
+        		<action android:name="android.intent.action.DATA"></action>  
+        		<action android:name="DATA"></action>     
+        	</intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -13,6 +13,8 @@
 int fd = -1;
 char *buffer;
 
+#define BUF_SIZE 100
+
 /*
  * Class:     edu_ucla_nesl_android_ashmem_datareceiver_nativelib_NativeLib
  * Method:    setFD
@@ -21,6 +23,13 @@ char *buffer;
 JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_ashmem_datareceiver_nativelib_NativeLib_setFD
   (JNIEnv *env, jclass class, jint _fd) {
 	fd = _fd;
+	buffer = (char *)mmap(NULL, BUF_SIZE, PROT_READ, MAP_SHARED, fd, 0);
+	if(buffer == MAP_FAILED)
+	{
+		__android_log_print(ANDROID_LOG_DEBUG, "Receiver NativeLib.h", "cannot mmap to fd: %d", fd);
+		return -1;
+	}
+	__android_log_print(ANDROID_LOG_DEBUG, "Receiver NativeLib.h", "Data read is %s", buffer);
 	return fd;
 }
 
@@ -31,14 +40,7 @@ JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_ashmem_datareceiver_nativelib_
  */
 JNIEXPORT jbyteArray JNICALL Java_edu_ucla_nesl_android_ashmem_datareceiver_nativelib_NativeLib_readFromFD
   (JNIEnv *env, jclass class, jint length) {
-	buffer = (char *)mmap(NULL, length, PROT_READ, MAP_SHARED, fd, 0);
-	if(buffer == MAP_FAILED)
-	{
-		__android_log_print(ANDROID_LOG_DEBUG, "NativeLib.h", "cannot mmap to fd: %d", fd);
-		return NULL;
-	}
-	__android_log_print(ANDROID_LOG_DEBUG, "NativeLib.h", "Data read is %s", buffer);
-
+	__android_log_print(ANDROID_LOG_DEBUG, "Receiver NativeLib.h", "Data read is %s", buffer);
 	jbyteArray ret = (*env)->NewByteArray(env, length);
 	(*env)->SetByteArrayRegion(env, ret, 0, length, (jbyte *)buffer);
 	return ret;
@@ -51,6 +53,11 @@ JNIEXPORT jbyteArray JNICALL Java_edu_ucla_nesl_android_ashmem_datareceiver_nati
  */
 JNIEXPORT jint JNICALL Java_edu_ucla_nesl_android_ashmem_datareceiver_nativelib_NativeLib_closeFD
   (JNIEnv *env, jclass class) {
+	if (munmap(buffer, BUF_SIZE) == -1) {
+		__android_log_print(ANDROID_LOG_DEBUG, "Receiver NativeLib.c", "Unmapping the file failed");
+		close(fd);
+		return -1;
+	}
 	close(fd);
 	return 0;
 }
